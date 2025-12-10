@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Cart, CartItem, CartResponse } from './carts.type';
+import { Cart, AddToCartResponse, CartItemRender, CartMeta, GetCartReponse } from './carts.type';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,35 +10,41 @@ import { HttpClient } from '@angular/common/http';
 
 
 export class CartsService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    console.log('CartsService initialized');
+  }
   
-  private cartId: string | null = null;
-  private cart: Cart | null = null;
-  public totalQuantity: number = 0;
-  
-  
-  public async addToCart(bookId: string, quantity: number) {
+  public addToCart(bookId: string, quantity: number): Observable<AddToCartResponse> {
     const addToCartAPI = 'http://localhost:3000/carts/add';
-
     const payload = { bookId, quantity };
+    return this.http.post<AddToCartResponse>(addToCartAPI, payload)
+  } 
 
-    this.http.post<CartResponse>(addToCartAPI, payload).subscribe({
-      next: (result) => {
-        this.cartId = result.cartId;
-        this.cart = result.cart;
-        this.updateTotalQuantity();
-        console.log('Item added to cart:', result);
-      },
-      error: (err) => console.error('Add to cart error', err),
-    });
+  public getCart(): Observable<GetCartReponse> {
+    const cartId = this.getCartId();
+    const getCartAPI = `http://localhost:3000/carts/${cartId}`;
+    return this.http.patch<GetCartReponse>(getCartAPI, {})
   }
 
-  public updateTotalQuantity() {
-    if (this.cart) {
-      this.totalQuantity = this.cart.items.reduce((total, item) => total + item.qty, 0);
-    } else {
-      this.totalQuantity = 0;
-    }
+  public updateCartQuantity(cart: Cart | null): number {
+    const cartQty =  cart ? cart.items.reduce((total, item) => total + item.qty, 0) : 0;
+    localStorage.setItem('cartQty', cartQty.toString());
+    return cartQty;
+  }
+
+  
+  public getCartQuantity() {
+    return localStorage.getItem('cartQty') || null;
   }
   
+
+  public updateCartId(cartId: string) { 
+    localStorage.setItem('cartId', cartId);
+  }
+
+
+  public getCartId() {
+    return localStorage.getItem('cartId') || null;
+  }
+
 }

@@ -12,7 +12,7 @@
       <div class="text-base text-gray-700">Stock: <span class="font-bold">{{ book.stock }}</span></div>
       <div class="text-xs text-gray-400">ID: {{ book._id }}</div>
       <button 
-        (click)="cartsService.addToCart(book._id, 1)"
+        (click)="onClickAddToCart(book._id)"
         class="bg-gray-500 text-white-700 px-4 py-2 rounded hover:bg-gray-600 hover:cursor-pointer"
       >
         Add to Cart
