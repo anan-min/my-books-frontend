@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Cart, AddToCartResponse, CartItemRender, CartMeta, GetCartReponse } from './carts.type';
+import { Cart, AddToCartResponse, GetCartReponse, CheckoutSummaryResponse } from './carts.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -31,6 +31,14 @@ export class CartsService {
     localStorage.setItem('cartQty', cartQty.toString());
     return cartQty;
   }
+
+
+  public getCheckoutSummary(): Observable<CheckoutSummaryResponse> {
+    const cartId = this.getCartId();
+    const getCartAPI = `http://localhost:3000/carts/${cartId}`;
+    return this.http.get<CheckoutSummaryResponse>(getCartAPI);
+  }
+
 
   
   public getCartQuantity() {
