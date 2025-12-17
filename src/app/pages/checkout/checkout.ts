@@ -56,25 +56,40 @@ async onContinueToPaymentClick() {
     return;
   }
 
+  // this.ordersService.createOrder(cartId, address)
+  //   .pipe(
+  //     switchMap((orderData) => {
+  //       const amount = this.checkoutSummary.grandTotal;
+  //       const currency = 'THB';
+  //       const orderId = orderData.orderId;
+  //       return this.paymentService.createSession(amount, currency, orderId);
+  //     })
+  //   )
+  //   .subscribe({
+  //     next: (sessionData) => {
+  //       console.log("Payment session created:", sessionData);
+  //       this.paymentService.setPaymentSessionId(sessionData.sessionId);
+  //       this.router.navigate(['/payment']);
+  //     },
+  //     error: (err) => {
+  //       console.error("Error in order/payment flow:", err);
+  //     }
+  //   });
+
   this.ordersService.createOrder(cartId, address)
-    .pipe(
-      switchMap((orderData) => {
-        const amount = this.checkoutSummary.grandTotal;
-        const currency = 'THB';
-        const orderId = orderData.orderId;
-        return this.paymentService.createSession(amount, currency, orderId);
-      })
-    )
     .subscribe({
-      next: (sessionData) => {
-        console.log("Payment session created:", sessionData);
-        this.paymentService.setPaymentSessionId(sessionData.sessionId);
+      next: (orderData) => {
+        const paymentSessionId = orderData.paymentSessionId;
+        console.log("Order created:", orderData);
+        this.paymentService.setPaymentSessionId(paymentSessionId);
         this.router.navigate(['/payment']);
       },
       error: (err) => {
-        console.error("Error in order/payment flow:", err);
+        console.error("Error creating order:", err);
       }
     });
+
+      
 }
 
 

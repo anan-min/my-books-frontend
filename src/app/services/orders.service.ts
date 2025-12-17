@@ -16,7 +16,7 @@ export class OrdersService {
 
     public createOrder(cartId: string, shippingAddress: string): Observable<createOrderResponse> {  
         const createOrderAPI = 'http://localhost:3000/orders/create';
-        const payload: createOrderRequest = { cartId,shippingAddress };
+        const payload: createOrderRequest = { cartId, shippingAddress };
         console.log('Creating order:', payload);
         return this.http.post<createOrderResponse>(createOrderAPI, payload);
     }
