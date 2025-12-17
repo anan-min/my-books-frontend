@@ -1,5 +1,8 @@
 <div>
-  <div class="p-4 bg-white rounded shadow min-w-[350px]">
+  <div 
+      *ngIf="checkoutSummary?.totalItems"
+      class="p-4 bg-white rounded shadow min-w-[350px]"
+    >
       <div class="text-lg font-semibold text-heading mb-4">Cart Summary</div>
       <div class="flex flex-row justify-between mb-2">
         <div class="text-base text-gray-700">Total Items:</div>
@@ -28,10 +31,21 @@
       </div>
    
 
-      <button type="submit" class="block w-full mt-4 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">
+      <button 
+        (click)="onContinueToPaymentClick()"
+        type="button" 
+        class="block w-full mt-4 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+      >
         Continue to Payment
       </button>
     </form>
 
+  </div>
+
+  <div
+      *ngIf="!checkoutSummary?.totalItems"
+      class="bg-white rounded shadow p-4 text-center text-gray-500 min-w-[500px]"
+  >
+      Your cart is empty.
   </div>
 </div>

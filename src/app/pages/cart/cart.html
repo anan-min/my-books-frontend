@@ -34,7 +34,10 @@
     </div>
 
     <!-- cart summary -->
-    <div class="mt-6 p-4 bg-white rounded shadow">
+    <div 
+      *ngIf="cartDisplay?.length"
+      class="mt-6 p-4 bg-white rounded shadow"
+    >
       <div class="text-lg font-semibold text-heading mb-4">Cart Summary</div>
       <div class="flex flex-row justify-between mb-2">
         <div class="text-base text-gray-700">Total Items:</div>

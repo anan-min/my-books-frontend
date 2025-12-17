@@ -17,6 +17,7 @@ export class CartsService {
   public addToCart(bookId: string, quantity: number): Observable<AddToCartResponse> {
     const addToCartAPI = 'http://localhost:3000/carts/add';
     const payload = { bookId, quantity };
+    console.log('Adding to cart:', payload);
     return this.http.post<AddToCartResponse>(addToCartAPI, payload)
   } 
 
